@@ -10,15 +10,18 @@ $(document).ready(function () {
     const city = $("#city").val().trim();
     const email = $("#email").val().trim();
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const phone = $("#phone").val().trim();
+    const phoneRegex = /^\+?\d{10,13}$/;
 
     let alertMessage = "";
-
     if (name === "") {
       alertMessage = "Name must be filled in";
     } else if (city === "") {
       alertMessage = "City must be filled in";
     } else if (!emailRegex.test(email)) {
       alertMessage = "Please enter a valid e-mail address";
+    } else if (!phoneRegex.test(phone)) {
+      alertMessage = "Please enter a valid phone number";
     }
 
     if (alertMessage !== "") {
@@ -49,9 +52,7 @@ $(document).ready(function () {
       dataType: "json", // Expect a JSON response from the server this time
       success: function (response) {
         if (response.success) {
-          $("#responseMessage").html(
-            '<div class="alert alert-success">Done!</div>'
-          );
+          $("#responseMessage").html('<div class="alert alert-success">Done!</div>');
           // Redirect to the URL returned by the server
           window.location.href = response.redirect;
         } else {
