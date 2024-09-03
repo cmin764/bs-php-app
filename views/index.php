@@ -1,5 +1,9 @@
 <h1 class="display-4 text-primary mb-4">PHP Test Application</h1>
 
+<div class="col-sm-4 mx-auto">
+	<input id="cityFilter" class="form-control mb-3" placeholder="Filter by city">
+</div>
+
 <table class="table table-striped">
 	<thead>
 		<tr>
