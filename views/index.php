@@ -4,27 +4,32 @@
 	<input id="cityFilter" class="form-control mb-3" placeholder="Filter by city">
 </div>
 
-<table class="table table-striped">
-	<thead>
-		<tr>
-			<th scope="col">Name</th>
-			<th scope="col">E-mail</th>
-			<th scope="col">City</th>
-		</tr>
-	</thead>
-	<tbody>
-		<?php foreach($users as $user) { ?>
-		<tr>
-			<!-- Displays data with escaping to prevent XSS -->
-			<td><?=htmlspecialchars($user->getName(), ENT_QUOTES, 'UTF-8');?></td>
-			<td><?=htmlspecialchars($user->getEmail(), ENT_QUOTES, 'UTF-8');?></td>
-			<td><?=htmlspecialchars($user->getCity(), ENT_QUOTES, 'UTF-8');?></td>
-		</tr>
-		<?php } ?>
-	</tbody>
-</table>
+<div class="table-wrapper">
+	<table class="table table-striped">
+		<thead>
+			<tr>
+				<th scope="col">Name</th>
+				<th scope="col">E-mail</th>
+				<th scope="col">City</th>
+			</tr>
+		</thead>
+		<tbody>
+			<?php foreach($users as $user) { ?>
+			<tr>
+				<!-- Displays data with escaping to prevent XSS -->
+				<td><?=htmlspecialchars($user->getName(), ENT_QUOTES, 'UTF-8');?></td>
+				<td><?=htmlspecialchars($user->getEmail(), ENT_QUOTES, 'UTF-8');?></td>
+				<td><?=htmlspecialchars($user->getCity(), ENT_QUOTES, 'UTF-8');?></td>
+			</tr>
+			<?php } ?>
+		</tbody>
+	</table>
+</div>
 
-<form class="border rounded col-md-5 mx-auto mt-5 p-4" method="post" action="create.php">
+<form class="border rounded col-md-5 mx-auto mt-5 p-4" method="post">
+	<!-- Placeholder for success/error message on AJAX form submissions -->
+	<div id="responseMessage" class="mt-3"></div>
+
 	<div class="row mb-3">
 		<label for="name" class="col-sm-2 col-form-label">Name</label>
 		<div class="col-sm-10">

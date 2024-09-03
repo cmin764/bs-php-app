@@ -31,9 +31,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 		'email' => $_POST['email'],
 		'city' => $_POST['city']
 	));
+
+	// Return a JSON response with the redirect URL
+    echo json_encode([
+        "success" => true,
+		// So the AJAX request can capture this and process the request
+        "redirect" => "index.php"
+    ]);
+
+    exit();
 }
 
 // Redirect back to index
-header('Location: index.php');
+// header('Location: index.php');
 
 ?>

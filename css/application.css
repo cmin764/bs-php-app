@@ -1,0 +1,4 @@
+.table-wrapper {
+    max-height: 400px; /* Adjust the max height as needed */
+    overflow-y: auto;  /* Adds a vertical scrollbar when the content exceeds max height */
+}
