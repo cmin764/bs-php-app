@@ -1,0 +1,13 @@
+<?php
+
+/*
+* This is template of database config.
+* Fill out database configuration options below and rename this file to 'database.php'
+*/
+
+$database = array(
+    'address'  => getenv('MYSQL_HOST') ?: 'localhost',
+    'username' => getenv('MYSQL_USER') ?: 'bs',
+    'password' => getenv('MYSQL_PASSWORD') ?: 'better-password',
+    'database' => getenv('MYSQL_DATABASE') ?: 'bs_php_app'
+);
