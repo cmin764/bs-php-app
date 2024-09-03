@@ -1,3 +1,4 @@
 .settings
 .project
 /config/database.php
+*.session.sql
