@@ -1,11 +1,11 @@
-<h1>PHP Test Application</h1>
+<h1 class="display-4 text-primary mb-4">PHP Test Application</h1>
 
-<table>
+<table class="table table-striped">
 	<thead>
 		<tr>
-			<th>Name</th>
-			<th>E-mail</th>
-			<th>City</th>
+			<th scope="col">Name</th>
+			<th scope="col">E-mail</th>
+			<th scope="col">City</th>
 		</tr>
 	</thead>
 	<tbody>
@@ -19,16 +19,27 @@
 	</tbody>
 </table>
 
-<form method="post" action="create.php">
+<form class="border rounded col-md-6 mx-auto mt-5 p-4" method="post" action="create.php">
+	<div class="row mb-3">
+		<label for="name" class="col-sm-2 col-form-label">Name</label>
+		<div class="col-sm-6">
+			<input class="form-control" name="name" id="name" placeholder="First and last name" />
+		</div>
+	</div>
 
-	<label for="name">Name:</label>
-	<input name="name" input="text" id="name"/>
+	<div class="row mb-3">
+		<label for="email" class="col-sm-2 col-form-label">E-mail</label>
+		<div class="col-sm-6">
+			<input type="email" class="form-control" name="email" id="email" placeholder="Valid e-mail address" />
+		</div>
+	</div>
 
-	<label for="email">E-mail:</label>
-	<input name="email" input="text" id="email"/>
+	<div class="row mb-3">
+		<label for="city" class="col-sm-2 col-form-label">City</label>
+		<div class="col-sm-6">
+			<input class="form-control" name="city" id="city" placeholder="Your home town" />
+		</div>
+	</div>
 
-	<label for="city">City:</label>
-	<input name="city" input="text" id="city"/>
-
-	<button>Create new row</button>
+	<button type="submit" class="btn btn-primary">Add</button>
 </form>
