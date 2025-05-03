@@ -1,0 +1,10 @@
+# Use the official MySQL image
+FROM mysql:8.0
+
+# Copy initialization script and SQL dump into the container
+WORKDIR /docker-entrypoint-initdb.d
+COPY database/init-db.sh .
+COPY database/*.sql .
+
+# Ensure the script is executable
+RUN chmod +x init-db.sh

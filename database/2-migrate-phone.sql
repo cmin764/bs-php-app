@@ -1,0 +1,6 @@
+ALTER TABLE `users`
+    ADD COLUMN `phone` VARCHAR(15) DEFAULT NULL;
+
+UPDATE `users`
+    SET `phone` = CONCAT('+40', FLOOR(RAND() * 1000000000) + 100000000)
+    WHERE `phone` IS NULL;

@@ -1,0 +1,30 @@
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    user: root
+    ports:
+      - "8080:80"
+    depends_on:
+      - db
+    environment:
+      MYSQL_HOST: db
+      MYSQL_DATABASE: bs_php_app
+      MYSQL_USER: bs
+      MYSQL_PASSWORD: better-password
+
+  db:
+    build:
+      context: .
+      dockerfile: Dockerfile.mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root_secret
+      MYSQL_DATABASE: bs_php_app
+      MYSQL_USER: bs
+      MYSQL_PASSWORD: better-password
+    volumes:
+      - db_data:/var/lib/mysql
+
+volumes:
+  db_data:
