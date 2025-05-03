@@ -10,9 +10,9 @@ services:
       - db
     environment:
       MYSQL_HOST: db
-      MYSQL_DATABASE: bs_php_app
       MYSQL_USER: bs
       MYSQL_PASSWORD: better-password
+      MYSQL_DATABASE: bs_php_app
 
   db:
     build:
@@ -20,9 +20,9 @@ services:
       dockerfile: Dockerfile.mysql
     environment:
       MYSQL_ROOT_PASSWORD: root_secret
-      MYSQL_DATABASE: bs_php_app
       MYSQL_USER: bs
       MYSQL_PASSWORD: better-password
+      MYSQL_DATABASE: bs_php_app
     volumes:
       - db_data:/var/lib/mysql
 

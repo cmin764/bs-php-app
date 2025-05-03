@@ -36,9 +36,9 @@ else
 fi
 
 # Determine the database directory path
-if [ -d "/docker-entrypoint-initdb.d/database" ]; then
+if [ -d "/database" ]; then
     # Running inside Docker
-    DB_DIR="/docker-entrypoint-initdb.d/database"
+    DB_DIR="/database"
 else
     # Running outside Docker
     DB_DIR="$(dirname "$0")"
