@@ -71,7 +71,12 @@ Or through Docker Compose:
 docker-compose up
 ```
 
-Rebuild the images with `docker-compose up --build` after bringing the services down, including volumes removal with `docker-compose down -v`.
+To completely clean up Docker resources (containers, images, volumes, and orphaned containers):
+```sh
+docker-compose down --rmi all --volumes --remove-orphans
+```
+
+Rebuild the images with `docker-compose up --build` after bringing the services down.
 
 ### Production Deployment
 
