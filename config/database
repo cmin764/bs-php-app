@@ -9,5 +9,5 @@ $database = array(
     'address'  => getenv('MYSQL_HOST') ?: 'localhost',
     'username' => getenv('MYSQL_USER') ?: 'bs',
     'password' => getenv('MYSQL_PASSWORD') ?: 'better-password',
-    'database' => getenv('MYSQL_DATABASE') ?: 'bs_php_app'
+    'database' => getenv('MYSQL_DATABASE') ?: 'usphere'
 );

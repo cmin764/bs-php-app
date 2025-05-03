@@ -12,7 +12,7 @@ services:
       MYSQL_HOST: db
       MYSQL_USER: bs
       MYSQL_PASSWORD: better-password
-      MYSQL_DATABASE: bs_php_app
+      MYSQL_DATABASE: usphere
 
   db:
     build:
@@ -22,7 +22,7 @@ services:
       MYSQL_ROOT_PASSWORD: root_secret
       MYSQL_USER: bs
       MYSQL_PASSWORD: better-password
-      MYSQL_DATABASE: bs_php_app
+      MYSQL_DATABASE: usphere
     volumes:
       - db_data:/var/lib/mysql
 

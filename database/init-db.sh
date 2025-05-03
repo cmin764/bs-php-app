@@ -25,7 +25,7 @@ import_sql_files() {
 MYSQL_HOST=${MYSQL_HOST:-localhost}
 MYSQL_USER=${MYSQL_USER:-bs}
 MYSQL_PASSWORD=${MYSQL_PASSWORD:-better-password}
-MYSQL_DATABASE=${MYSQL_DATABASE:-bs_php_app}
+MYSQL_DATABASE=${MYSQL_DATABASE:-usphere}
 MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
 
 # Set root password argument if provided

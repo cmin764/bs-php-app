@@ -81,27 +81,27 @@ Rebuild the images with `docker-compose up --build` after bringing the services 
 ### Production Deployment
 
 1. Ensure initially that you have the ClearDB add-on (Heroku's MySQL) available and integrated (easy to do from the UI)
-2. Create a new app, let's say `bs-php-app`
+2. Create a new app, let's say `usphere`
 3. Push code and release the `web` service (this will build and upload images)
 4. Ensure proper configuration via environment variables (to access the DB)
 
 ```sh
 # Login and create your first app
 heroku login
-heroku create bs-php-app
+heroku create usphere
 
 # Tell Heroku to do a Docker-based deployment
 heroku container:login
-heroku stack:set container -a bs-php-app
-heroku labs:enable --app=bs-php-app runtime-new-layer-extract  # fixes Apache
-heroku container:push web --app bs-php-app
-heroku container:release web --app bs-php-app
+heroku stack:set container -a usphere
+heroku labs:enable --app=usphere runtime-new-layer-extract  # fixes Apache
+heroku container:push web --app usphere
+heroku container:release web --app usphere
 
 # Configure remote DB access via env vars credentials
-heroku config:set MYSQL_USER=b********d4c --app bs-php-app
-heroku config:set MYSQL_PASSWORD=c7******5 --app bs-php-app
-heroku config:set MYSQL_HOST=us-cluster-east-01.k8s.cleardb.net --app bs-php-app
-heroku config:set MYSQL_DATABASE=heroku_1f6******4f5 --app bs-php-app
+heroku config:set MYSQL_USER=b********d4c --app usphere
+heroku config:set MYSQL_PASSWORD=c7******5 --app usphere
+heroku config:set MYSQL_HOST=us-cluster-east-01.k8s.cleardb.net --app usphere
+heroku config:set MYSQL_DATABASE=heroku_1f6******4f5 --app usphere
 ```
 
 > Make sure to manually import the SQL dumps in the remote DB (not automated)
