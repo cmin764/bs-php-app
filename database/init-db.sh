@@ -1,30 +1,59 @@
 #!/bin/bash
 set -e
 
-# Wait for MySQL to start
-echo "Waiting for MySQL to start..."
-sleep 5  # not the best way to "poll" the server
+# Function to wait for MySQL to be ready
+wait_for_mysql() {
+    echo "Waiting for MySQL to start..."
+    while ! mysqladmin ping -h"$MYSQL_HOST" -u"$MYSQL_USER" -p"$MYSQL_PASSWORD" --silent; do
+        sleep 1
+    done
+}
 
-# Create the database
-echo "Creating database..."
-mysql -u root -p"$MYSQL_ROOT_PASSWORD" -e "CREATE DATABASE IF NOT EXISTS $MYSQL_DATABASE;"
+# Function to import SQL files
+import_sql_files() {
+    local db_dir="$1"
+    echo "Importing SQL files from $db_dir..."
 
-# Create a user and grant privileges
-echo "Creating user and granting privileges..."
-mysql -u root -p"$MYSQL_ROOT_PASSWORD" -e "CREATE USER IF NOT EXISTS '$MYSQL_USER'@'%' IDENTIFIED BY '$MYSQL_PASSWORD';"
-mysql -u root -p"$MYSQL_ROOT_PASSWORD" -e "GRANT ALL PRIVILEGES ON $MYSQL_DATABASE.* TO '$MYSQL_USER'@'%';"
-mysql -u root -p"$MYSQL_ROOT_PASSWORD" -e "FLUSH PRIVILEGES;"
+    # Find all .sql files and sort them numerically
+    for sql_file in $(find "$db_dir" -name "*.sql" | sort -V); do
+        echo "Importing $sql_file..."
+        mysql -h"$MYSQL_HOST" -u"$MYSQL_USER" -p"$MYSQL_PASSWORD" "$MYSQL_DATABASE" < "$sql_file"
+    done
+}
 
-# Import the SQL dump
-dump="/docker-entrypoint-initdb.d/database/1-schema.sql"
-if [ -f $dump ]; then
-    echo "Importing SQL dump..."
-    mysql -u "$MYSQL_USER" -p"$MYSQL_PASSWORD" $MYSQL_DATABASE < $dump
+# Set default values if not provided
+MYSQL_HOST=${MYSQL_HOST:-localhost}
+MYSQL_USER=${MYSQL_USER:-bs}
+MYSQL_PASSWORD=${MYSQL_PASSWORD:-better-password}
+MYSQL_DATABASE=${MYSQL_DATABASE:-bs_php_app}
+
+# Determine the database directory path
+if [ -d "/docker-entrypoint-initdb.d/database" ]; then
+    # Running inside Docker
+    DB_DIR="/docker-entrypoint-initdb.d/database"
+else
+    # Running outside Docker
+    DB_DIR="$(dirname "$0")"
 fi
 
-# FIXME(cmin764): Iterate over all `*-migrate-*` files and import the dumps.
-dump="/docker-entrypoint-initdb.d/database/2-migrate-phone.sql"
-if [ -f $dump ]; then
-    echo "Apply SQL phone migration..."
-    mysql -u "$MYSQL_USER" -p"$MYSQL_PASSWORD" $MYSQL_DATABASE < $dump
+# Create the database if it doesn't exist
+echo "Creating database if not exists..."
+mysql -h"$MYSQL_HOST" -u"$MYSQL_USER" -p"$MYSQL_PASSWORD" -e "CREATE DATABASE IF NOT EXISTS $MYSQL_DATABASE;"
+
+# Create a user and grant privileges (only if not root)
+if [ "$MYSQL_USER" != "root" ]; then
+    echo "Creating user and granting privileges..."
+    mysql -h"$MYSQL_HOST" -u"root" -e "CREATE USER IF NOT EXISTS '$MYSQL_USER'@'%' IDENTIFIED BY '$MYSQL_PASSWORD';"
+    mysql -h"$MYSQL_HOST" -u"root" -e "GRANT ALL PRIVILEGES ON $MYSQL_DATABASE.* TO '$MYSQL_USER'@'%';"
+    mysql -h"$MYSQL_HOST" -u"root" -e "FLUSH PRIVILEGES;"
 fi
+
+# Wait for MySQL if running in Docker
+if [ -d "/docker-entrypoint-initdb.d" ]; then
+    wait_for_mysql
+fi
+
+# Import all SQL files
+import_sql_files "$DB_DIR"
+
+echo "Database initialization completed successfully!"
