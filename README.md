@@ -101,8 +101,8 @@ heroku config:set MYSQL_DATABASE=heroku_1f6******4f5 --app bs-php-app
 
 > Make sure to manually import the SQL dumps in the remote DB (not automated)
 
-## Development Tasks
+## Development & Future Improvements
 
-For a list of tasks to perform, please see [challenge](docs/challenge.md).
+For current development tasks, please see [challenge](docs/challenge.md). For planned improvements and features, please see [todo](docs/todo.md).
 
 Thank you! 🙏

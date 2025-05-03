@@ -96,8 +96,12 @@ class BaseModel {
 		}
 		// Parse null values
 		if($value === null)return 'NULL';
+		// Handle phone numbers with + prefix
+		if(is_string($value) && preg_match('/^\+?\d+$/', $value)) {
+			return "'" . $value . "'";
+		}
 		// Escape string values
-		if(!is_numeric($value))return "'".htmlentities(addslashes($value))."'";
+		if(!is_numeric($value))return "'".htmlspecialchars(addslashes($value), ENT_QUOTES, 'UTF-8')."'";
 		return $value;
 	}
 
@@ -218,15 +222,17 @@ class BaseModel {
 	 * Builds INSERT data strings from given data
 	 * Returns array(
 	 * 	'columns' => 'column string',
-	 * 	'values'  => 'values string'
+	 * 	'placeholders' => 'placeholders string',
+	 * 	'values' => 'values array'
 	 * );
 	 */
 	private static function buildInsertData($data){
 		$columns = '`'.implode('`, `',array_keys($data)).'`';
-		$values = implode(',',self::escapeValue(array_values($data)));
+		$placeholders = str_repeat('?,', count($data) - 1) . '?';
 		return array(
-			'columns' 	=> $columns,
-			'values' 	=> $values
+			'columns' => $columns,
+			'placeholders' => $placeholders,
+			'values' => array_values($data)
 		);
 	}
 
@@ -286,16 +292,19 @@ class BaseModel {
 		$this->setFields($data);
 		$insertStrings = self::buildInsertData($this->fields);
 
-		/* An example that may avoid any opportunity for SQL injection.
-		$stmt = $this->db->prepare("INSERT INTO Users (name, email, city) VALUES (?, ?, ?)");
-		$stmt->bind_param("sss", $name, $email, $city);
+		// Prepare the statement
+		$query = "INSERT INTO `".static::tableName."` (".$insertStrings['columns'].", `created_at`) VALUES (".$insertStrings['placeholders'].", NOW())";
+		$stmt = $this->db->prepare($query);
+
+		// Bind parameters
+		$types = str_repeat('s', count($insertStrings['values']));
+		$stmt->bind_param($types, ...$insertStrings['values']);
+
+		// Execute the query
 		$stmt->execute();
-		*/
 
-		$query = "INSERT INTO `".static::tableName."` (".$insertStrings['columns'].", `created_at`) VALUES (".$insertStrings['values'].", NOW())";
-		$this->db->query($query);
-
-		// Retrieve id of inserted record
+		// Get the inserted ID
 		$this->id = $this->db->mysqli->insert_id;
+		return $this->id;
 	}
 }

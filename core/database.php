@@ -76,6 +76,13 @@ class Database {
 		$ret =  is_object($res)?$this->getRows($res):true;
 		return $ret;
 	}
+
+	/**
+	 * Prepares a statement for execution
+	 */
+	public function prepare($query) {
+		return $this->mysqli->prepare($query);
+	}
 }
 
 return new Database();

@@ -24,7 +24,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         die("Invalid city input");
     }
 
-	// TODO(cmin764): Validate phone number here as well.
+	// Validate Phone (must be a valid international phone number)
+    if (empty($phone) || !preg_match("/^\+?\d{10,13}$/", $phone)) {
+        die("Invalid phone number format");
+    }
+	error_log("Phone number: " . $phone);
 
 	// Create new instance of user
 	$user = new User($app->db);
